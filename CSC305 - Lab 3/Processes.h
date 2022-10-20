@@ -5,7 +5,14 @@
 #include <iostream>
 
 struct Processes {
+	int id;
 	int size;
+};
+
+struct Partition {
+	int size;
+	int waste;
+	bool status;
 };
 
 #endif
