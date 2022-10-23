@@ -23,7 +23,7 @@ struct Partition {
 	int waste;
 };
 
-enum Actions { stop, best, first, next, worst };
+enum Actions { stop, best, first, second, worst };
 
 void bestFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n);
 void firstFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n);
@@ -125,8 +125,42 @@ void firstFit(vector<Partition> partitionSize, int m, vector<Processes> processS
 }
 
 void nextFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n) {
+	//Create a allocation vector to store n size
+	vector<int> allocation(n);
+	int j = 0;
 
+	//Stores block id of the block allocated to a process
+	fill(allocation.begin(), allocation.end(), 0);
+
+	//Sum of total waste from blocks
+	int totalWaste = 0;
+
+	for (int i = 0; i < n; i++) {
+		while (j < m) {
+			allocation[i] = j;
+			partitionSize[j].size -= processSize[i].size;
+			break;
+		}
+		j = (j + 1) % m;
+	}
+
+	cout << "Next Fit Algorithm" << endl;
+	cout << "Job ID/Size\t\tPartition ID/Size\t\tWaste\t\tStatus" << endl;
+	for (int i = 0; i < n; i++) {
+		cout << processSize[i].id << " - " << processSize[i].size << "\t\t\t" << processSize[i].partitionID << " - " << partitionSize[i].size << "\t\t\t\t" << totalWaste << "\t\t" << processSize[i].status;
+		if (allocation[i] != -1) {
+			cout << allocation[i] + 1;
+		}
+		else {
+			processSize[i].status = "wait";
+			partitionSize[i].status = false;
+		}
+		cout << endl;
+	}
 }
 
+void worstFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n) {
+
+}
 
 #endif

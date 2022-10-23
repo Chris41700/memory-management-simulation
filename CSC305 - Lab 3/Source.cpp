@@ -63,8 +63,11 @@ int main() {
 		case first:
 			firstFit(partition, m, process, n);
 			break;
-		case :
+		case second:
 			nextFit(partition, m, process, n);
+			break;
+		case worst:
+			worstFit(partition, m, process, n);
 			break;
 		}
 	} while (action != stop);
