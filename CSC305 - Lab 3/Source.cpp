@@ -7,16 +7,19 @@ int main() {
 	cout << "Enter the number of processes: ";
 	cin >> numOfProcesses;
 	
-	//Create a vector for each job
+	//Create a vector to store each process
 	vector<Processes> process(numOfProcesses);
 
+	//Create a vector to store process sizes
+	vector<int> processSize;
+
+	int jobSize = 0;
 	//Prompts the user to input the size for each job
 	cout << "\nInput the size of each job:" << endl;
 	for (int i = 0; i < numOfProcesses; i++) {
-		int jobSize = 0;
 		cin >> jobSize;
-		process[i].size = jobSize;
-		process[i].id = i;
+		processSize.push_back(jobSize);
+		process[i].id = i + 1;
 	}
 
 	int numOfPartitions = 0;
@@ -28,18 +31,22 @@ int main() {
 	//Create a vector to store partitions objects
 	vector<Partition> partition(numOfPartitions);
 
+	//Create a vector to store partition sizes
+	vector<int> partitionSize;
+
+	int blockSize = 0;
+
 	//Prompts the user to input the size for each partition;
 	cout << "\nInput the size of each partition:" << endl;
 	for (int i = 0; i < numOfPartitions; i++) {
-		int partitionSize = 0;
-		cin >> partitionSize;
-		partition[i].size = partitionSize;
-		partition[i].id = i;
+		cin >> blockSize;
+		partitionSize.push_back(blockSize);
+		partition[i].id = i + 1;
 	}
 
 	int action;
-	int m = partition.size();
-	int n = process.size();
+	int m = partitionSize.size();
+	int n = processSize.size();
 
 	//User menu to choose an memory management algorithm
 	do {
@@ -58,16 +65,16 @@ int main() {
 			exit(0);
 			break;
 		case best:
-			bestFit(partition, m, process, n);
+			bestFit(partitionSize, m, processSize, n);
 			break;
 		case first:
-			firstFit(partition, m, process, n);
+			firstFit(partitionSize, m, processSize, n);
 			break;
 		case second:
-			nextFit(partition, m, process, n);
+			nextFit(partitionSize, m, processSize, n);
 			break;
 		case worst:
-			worstFit(partition, m, process, n);
+			worstFit(partitionSize, m, processSize, n);
 			break;
 		}
 	} while (action != stop);
