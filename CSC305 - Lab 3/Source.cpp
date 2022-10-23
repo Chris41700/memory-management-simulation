@@ -34,11 +34,12 @@ int main() {
 		int partitionSize = 0;
 		cin >> partitionSize;
 		partition[i].size = partitionSize;
+		partition[i].id = i;
 	}
 
 	int action;
-    int m = sizeof(process) / sizeof(process[0]);
-    int n = sizeof(partition) / sizeof(partition[0]);
+	int m = partition.size();
+	int n = process.size();
 
 	//User menu to choose an memory management algorithm
 	do {
@@ -57,8 +58,16 @@ int main() {
 			exit(0);
 			break;
 		case best:
-			bestFit(process, m, partition, n);
+			bestFit(partition, m, process, n);
+			break;
+		case first:
+			firstFit(partition, m, process, n);
+			break;
+		case :
+			nextFit(partition, m, process, n);
 			break;
 		}
 	} while (action != stop);
+
+	return 0;
 }

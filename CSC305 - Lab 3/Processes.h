@@ -20,32 +20,47 @@ struct Partition {
 	bool status;
 	int processID;
 	int size;
+	int waste;
 };
 
 enum Actions { stop, best, first, next, worst };
 
-void bestFit(vector<Processes> processSize, int m, vector<Partition> partitionSize, int n);
-void firstFit(vector<Processes> processSize, int m, vector<Partition> partitionSize, int n);
-void nextFit(vector<Processes> processSize, int m, vector<Partition> partitionSize, int n);
-void worstFit(vector<Processes> processSize, int m, vector<Partition> partitionSize, int n);
+void bestFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n);
+void firstFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n);
+void nextFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n);
+void worstFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n);
 
-void bestFit(vector<Processes> processSize, int m, vector<Partition> partitionSize, int n) {
+void bestFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n) {
 	//Create a allocation vector to store n size
 	vector<int> allocation(n);
 
 	//Stores block id of the block allocated to a process
 	fill(allocation.begin(), allocation.end(), 0);
 
+	int totalWaste = 0;
+
 	//Select appropriate blocks for each process
 	for (int i = 0; i < n; i++) {
 		int bestIdx = -1;
 		for (int j = 0; j < m; j++) {
-			if (processSize[j] >= partitionSize[i]) {
+			if (partitionSize[j].size >= processSize[i].size) {
 				if (bestIdx == -1) {
 					bestIdx = j;
+					processSize[i].partitionID = j;
+					processSize[i].status = "run";
+					totalWaste += partitionSize[j].size - processSize[i].size;
+					partitionSize[j].size -= processSize[i].size;
+					partitionSize[j].processID = processSize[i].id;
+					partitionSize[j].status = true;
 				}
-				else if (processSize[bestIdx] > processSize[j]) {
+				else if (partitionSize[bestIdx].size > processSize[j].size) {
 					bestIdx = j;
+					processSize[i].partitionID = j;
+					processSize[i].status = "run";
+					totalWaste += partitionSize[j].size - processSize[i].size;
+					partitionSize[j].size -= processSize[i].size;
+					partitionSize[j].processID = processSize[i].id;
+					partitionSize[j].status = true;
 				}
 			}
 		}
@@ -53,13 +68,14 @@ void bestFit(vector<Processes> processSize, int m, vector<Partition> partitionSi
 		//Find a block for the current process
 		if (bestIdx != -1) {
 			allocation[i] = bestIdx;
-			processSize[bestIdx] -= partitionSize[i];
+			partitionSize[bestIdx].size -= processSize[i].size;
 		}
 	}
 
-	cout << "\nProcess No.\tProcess Size\tBlock no.\n";
+	cout << "Best Fit Algorithm" << endl;
+	cout << "Job ID/Size\t\tPartition ID/Size\t\tWaste\t\tStatus" << endl;
 	for (int i = 0; i < n; i++) {
-		cout << "   " << i + 1 << "\t\t" << processSize[i] << "\t\t";
+		cout << processSize[i].id << " - " << processSize[i].size << "\t\t\t" << processSize[i].partitionID << " - " << partitionSize[i].size << "\t\t\t\t" << totalWaste << "\t\t" << processSize[i].status;
 		if (allocation[i] != -1)
 			cout << allocation[i] + 1;
 		else
@@ -67,5 +83,50 @@ void bestFit(vector<Processes> processSize, int m, vector<Partition> partitionSi
 		cout << endl;
 	}
 }
+
+void firstFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n) {
+	//Create a allocation vector to store n size
+	vector<int> allocation(n);
+
+	//Stores block id of the block allocated to a process
+	fill(allocation.begin(), allocation.end(), 0);
+
+	//Sum of total waste from blocks
+	int totalWaste = 0;
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			if (partitionSize[j].size >= processSize[i].size) {
+				allocation[i] = j;
+				processSize[i].partitionID = j;
+				processSize[i].status = "run";
+				totalWaste += partitionSize[j].size - processSize[i].size;
+				partitionSize[j].size -= processSize[i].size;
+				partitionSize[j].processID = processSize[i].id;
+				partitionSize[j].status = true;
+				break;
+			}
+		}
+	}
+
+	cout << "First Fit Algorithm" << endl;
+	cout << "Job ID/Size\t\tPartition ID/Size\t\tWaste\t\tStatus" << endl;
+	for (int i = 0; i < n; i++) {
+		cout << processSize[i].id << " - " << processSize[i].size << "\t\t\t" << processSize[i].partitionID << " - " << partitionSize[i].size << "\t\t\t\t" << totalWaste << "\t\t" << processSize[i].status;
+		if (allocation[i] != -1) {
+			cout << allocation[i] + 1;
+		}
+		else {
+			processSize[i].status = "wait";
+			partitionSize[i].status = false;
+		}
+		cout << endl;
+	}
+}
+
+void nextFit(vector<Partition> partitionSize, int m, vector<Processes> processSize, int n) {
+
+}
+
 
 #endif
