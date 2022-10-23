@@ -50,31 +50,31 @@ int main() {
 
 	//User menu to choose an memory management algorithm
 	do {
-		cout << "\n----------Memory Management Algorithm Menu----------" << endl;
+		cout << "\n=============Memory Management Algorithm Menu=============" << endl;
 		cout << "0 - Stop" << endl;
-		cout << "1 - Best Fit" << endl;
-		cout << "2 - First Fit" << endl;
-		cout << "3 - Next Fit" << endl;
+		cout << "1 - First Fit" << endl;
+		cout << "2 - Next Fit" << endl;
+		cout << "3 - Best Fit" << endl;
 		cout << "4 - Worst Fit" << endl;
 		cout << "Enter a number to choose a memory management algorithm: ";
 		cin >> action;
-		cout << endl;
+		cout << "==========================================================" << endl << endl;
 
 		switch (action) {
 		case stop:
 			exit(0);
 			break;
-		case best:
-			bestFit(partitionSize, m, processSize, n);
-			break;
 		case first:
-			firstFit(partitionSize, m, processSize, n);
+			firstFit(partitionSize, m, processSize, n, partition, process);
 			break;
 		case second:
-			nextFit(partitionSize, m, processSize, n);
+			nextFit(partitionSize, m, processSize, n, partition, process);
+			break;
+		case best:
+			bestFit(partitionSize, m, processSize, n, partition, process);
 			break;
 		case worst:
-			worstFit(partitionSize, m, processSize, n);
+			worstFit(partitionSize, m, processSize, n, partition, process);
 			break;
 		}
 	} while (action != stop);
