@@ -21,15 +21,20 @@ struct Partition {
 	int processID;
 };
 
+//Enum for switch menu choices
 enum Actions { stop, first, second, best, worst };
 
+//Function Prototypes
 void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 
 void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
+	//Vector length for waste will be the greater size between m and n
 	int wasteLength = (m < n) ? m : n;
+
+	//Create vector to store waste from partitions
 	vector<int> waste(wasteLength);
 	
 	for (int i = 0; i < n; i++) {
@@ -64,7 +69,10 @@ void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, 
 }
 
 void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
+	//Vector length for waste will be the greater size between m and n
 	int wasteLength = (m < n) ? m : n;
+
+	//Create vector to store waste from partitions
 	vector<int> waste(wasteLength);
 	int j = 0;
 
@@ -103,7 +111,10 @@ void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 }
 
 void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
+	//Vector length for waste will be the greater size between m and n
 	int wasteLength = (m < n) ? m : n;
+
+	//Create vector to store waste from partitions
 	vector<int> waste(wasteLength);
 
 	for (int i = 0; i < n; i++) {
@@ -147,7 +158,10 @@ void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 }
 
 void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
+	//Vector length for waste will be the greater size between m and n
 	int wasteLength = (m < n) ? m : n;
+
+	//Create vector to store waste from partitions
 	vector<int> waste(wasteLength);
 
 	for (int i = 0; i < n; i++) {
