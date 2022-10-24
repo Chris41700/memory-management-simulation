@@ -70,12 +70,12 @@ int main() {
 		case second:
 			nextFit(partitionSize, m, processSize, n, partition, process);
 			break;
-		//case best:
-		//	bestFit(partitionSize, m, processSize, n, partition, process);
-		//	break;
-		//case worst:
-		//	worstFit(partitionSize, m, processSize, n, partition, process);
-		//	break;
+		case best:
+			bestFit(partitionSize, m, processSize, n, partition, process);
+			break;
+		case worst:
+			worstFit(partitionSize, m, processSize, n, partition, process);
+			break;
 		}
 	} while (action != stop);
 
