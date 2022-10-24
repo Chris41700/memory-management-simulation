@@ -86,7 +86,7 @@ void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 		}
 	}
 
-	cout << "================================Next Fit Algorithm================================" << endl;
+	cout << "===============================Next Fit Algorithm================================" << endl;
 	cout << "Job ID\t\tPartition ID\t\tWaste\t\t\tStatus" << endl;
 	for (int i = 0; i < n; i++) {
 		cout << process[i].id << "\t\t" << process[i].partitionID << "\t\t\t";
@@ -121,7 +121,7 @@ void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 		}
 		
 		if (bestIndex != -1) {
-			process[i].partitionID = bestIndex;
+			process[i].partitionID = bestIndex + 1;
 			process[i].status = "run";
 			partition[bestIndex].inUsed = true;
 			partition[bestIndex].processID = process[i].id;
@@ -158,14 +158,14 @@ void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, 
 				if (worstIndex == -1) {
 					worstIndex = j;
 				}
-				else if (partitionSize[worstIndex] > partitionSize[j]) {
+				else if (partitionSize[worstIndex] < partitionSize[j]) {
 					worstIndex = j;
 				}
 			}
 		}
 
 		if (worstIndex != -1) {
-			process[i].partitionID = worstIndex;
+			process[i].partitionID = worstIndex + 1;
 			process[i].status = "run";
 			partition[worstIndex].inUsed = true;
 			partition[worstIndex].processID = process[i].id;
@@ -174,7 +174,7 @@ void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, 
 		}
 	}
 
-	cout << "===============================Best Fit Algorithm================================" << endl;
+	cout << "===============================Worst Fit Algorithm================================" << endl;
 	cout << "Job ID\t\tPartition ID\t\tWaste\t\t\tStatus" << endl;
 	for (int i = 0; i < n; i++) {
 		cout << process[i].id << "\t\t" << process[i].partitionID << "\t\t\t";
