@@ -26,7 +26,7 @@ enum Actions { stop, first, second, best, worst };
 void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
-//void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
+void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 
 void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
 	int wasteLength = (m < n) ? m : n;
@@ -127,6 +127,50 @@ void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 			partition[bestIndex].processID = process[i].id;
 			waste[i] = partitionSize[bestIndex] - processSize[i];
 			partitionSize[bestIndex] -= processSize[i];
+		}
+	}
+
+	cout << "==============================Best Fit Algorithm===============================" << endl;
+	cout << "Job ID\t\tPartition ID\t\tWaste\t\t\tStatus" << endl;
+	for (int i = 0; i < n; i++) {
+		cout << process[i].id << "\t\t" << process[i].partitionID << "\t\t\t";
+
+		if (i < waste.size()) {
+			cout << waste.at(i) << "\t\t\t" << process[i].status << endl;
+		}
+		else {
+			cout << "0" << "\t\t\t" << process[i].status << endl;;
+		}
+	}
+	cout << "Total Waste: " << accumulate(waste.begin(), waste.end(), 0) << endl;
+	cout << "===============================================================================" << endl;
+}
+
+void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
+	int wasteLength = (m < n) ? m : n;
+	vector<int> waste(wasteLength);
+
+	for (int i = 0; i < n; i++) {
+		int worstIndex = -1;
+		process[i].status = "wait";
+		for (int j = 0; j < m; j++) {
+			if (partitionSize[j] >= processSize[i] && partition[j].inUsed != true) {
+				if (worstIndex == -1) {
+					worstIndex = j;
+				}
+				else if (partitionSize[worstIndex] > partitionSize[j]) {
+					worstIndex = j;
+				}
+			}
+		}
+
+		if (worstIndex != -1) {
+			process[i].partitionID = worstIndex;
+			process[i].status = "run";
+			partition[worstIndex].inUsed = true;
+			partition[worstIndex].processID = process[i].id;
+			waste[i] = partitionSize[worstIndex] - processSize[i];
+			partitionSize[worstIndex] -= processSize[i];
 		}
 	}
 
