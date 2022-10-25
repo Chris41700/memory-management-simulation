@@ -22,13 +22,14 @@ struct Partition {
 };
 
 //Enum for switch menu choices
-enum Actions { stop, first, second, best, worst };
+enum Actions { stop, first, second, best, worst, dynamic };
 
 //Function Prototypes
 void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
-void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
+void worstFitFixed(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
+void worstFitDynamic(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 
 void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
 	//Create vector to store waste from partitions
@@ -148,7 +149,7 @@ void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 	cout << "===============================================================================" << endl;
 }
 
-void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
+void worstFitFixed(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
 	//Create vector to store waste from partitions
 	vector<int> waste(n);
 
@@ -176,7 +177,7 @@ void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, 
 		}
 	}
 
-	cout << "===============================Worst Fit Algorithm================================" << endl;
+	cout << "============================Worst Fit Algorithm Fixed=============================" << endl;
 	cout << "Job ID\t\tPartition ID\t\tWaste\t\t\tStatus" << endl;
 	for (int i = 0; i < n; i++) {
 		cout << process[i].id << "\t\t" << process[i].partitionID << "\t\t\t";
@@ -191,5 +192,52 @@ void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, 
 	cout << "Total Waste: " << accumulate(waste.begin(), waste.end(), 0) << endl;
 	cout << "=================================================================================" << endl;
 }
+
+void worstFitDynamic(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
+	//Create vector to store waste from partitions
+	vector<int> waste(n);
+
+	for (int i = 0; i < n; i++) {
+		int worstIndex = -1;
+		process[i].status = "wait";
+		for (int j = 0; j < m; j++) {
+			if (partitionSize[j] >= processSize[i] && partition[j].inUsed != true) {
+				if (worstIndex == -1) {
+					worstIndex = j;
+				}
+				else if (partitionSize[worstIndex] < partitionSize[j]) {
+					worstIndex = j;
+				}
+			}
+		}
+
+		if (worstIndex != -1) {
+			process[i].partitionID = worstIndex + 1;
+			process[i].status = "run";
+			partition[worstIndex].inUsed = true;
+			partition[worstIndex].processID = process[i].id;
+			waste[i] = partitionSize[worstIndex] - processSize[i];
+			partitionSize[worstIndex] -= processSize[i];
+
+			if ()
+		}
+	}
+
+	cout << "===========================Worst Fit Algorithm Dynamic============================" << endl;
+	cout << "Job ID\t\tPartition ID\t\tWaste\t\t\tStatus" << endl;
+	for (int i = 0; i < n; i++) {
+		cout << process[i].id << "\t\t" << process[i].partitionID << "\t\t\t";
+
+		if (i < waste.size()) {
+			cout << waste.at(i) << "\t\t\t" << process[i].status << endl;
+		}
+		else {
+			cout << "0" << "\t\t\t" << process[i].status << endl;;
+		}
+	}
+	cout << "Total Waste: " << accumulate(waste.begin(), waste.end(), 0) << endl;
+	cout << "=================================================================================" << endl;
+}
+
 
 #endif
