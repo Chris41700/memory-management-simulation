@@ -31,11 +31,8 @@ void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process);
 
 void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
-	//Vector length for waste will be the greater size between m and n
-	int wasteLength = (m < n) ? m : n;
-
 	//Create vector to store waste from partitions
-	vector<int> waste(wasteLength);
+	vector<int> waste(n);
 	
 	for (int i = 0; i < n; i++) {
 		process[i].status = "wait";
@@ -69,11 +66,8 @@ void firstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, 
 }
 
 void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
-	//Vector length for waste will be the greater size between m and n
-	int wasteLength = (m < n) ? m : n;
-
 	//Create vector to store waste from partitions
-	vector<int> waste(wasteLength);
+	vector<int> waste(n);
 	int j = 0;
 
 	for (int i = 0; i < n; i++) {
@@ -111,11 +105,8 @@ void nextFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 }
 
 void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
-	//Vector length for waste will be the greater size between m and n
-	int wasteLength = (m < n) ? m : n;
-
 	//Create vector to store waste from partitions
-	vector<int> waste(wasteLength);
+	vector<int> waste(n);
 
 	for (int i = 0; i < n; i++) {
 		int bestIndex = -1;
@@ -158,11 +149,8 @@ void bestFit(vector<int> partitionSize, int m, vector<int> processSize, int n, v
 }
 
 void worstFit(vector<int> partitionSize, int m, vector<int> processSize, int n, vector<Partition> partition, vector<Processes> process) {
-	//Vector length for waste will be the greater size between m and n
-	int wasteLength = (m < n) ? m : n;
-
 	//Create vector to store waste from partitions
-	vector<int> waste(wasteLength);
+	vector<int> waste(n);
 
 	for (int i = 0; i < n; i++) {
 		int worstIndex = -1;
