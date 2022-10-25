@@ -16,7 +16,7 @@ struct Processes {
 };
 
 struct Partition {
-	int id;
+	double id;
 	bool inUsed;
 	int processID;
 };
@@ -201,7 +201,7 @@ void worstFitDynamic(vector<int> partitionSize, int m, vector<int> processSize, 
 		int worstIndex = -1;
 		process[i].status = "wait";
 		for (int j = 0; j < m; j++) {
-			if (partitionSize[j] >= processSize[i] && partition[j].inUsed != true) {
+			if (partitionSize[j] >= processSize[i] && !partition[j].inUsed) {
 				if (worstIndex == -1) {
 					worstIndex = j;
 				}
@@ -218,12 +218,22 @@ void worstFitDynamic(vector<int> partitionSize, int m, vector<int> processSize, 
 			partition[worstIndex].processID = process[i].id;
 			waste[i] = partitionSize[worstIndex] - processSize[i];
 			partitionSize[worstIndex] -= processSize[i];
+			
+			if (waste[i] > 0) {
+				partitionSize.insert(partitionSize.begin() + worstIndex + 1, waste[i]);
+				partition.resize(partition.size() + 1);
+				partition[worstIndex + 1].id = worstIndex + 1.1;
+				partition[worstIndex + 1].inUsed = false;
 
-			if ()
+				for (int i : partitionSize)
+					cout << i << ' ';
+
+				cout << endl;
+			}
 		}
 	}
 
-	cout << "===========================Worst Fit Algorithm Dynamic============================" << endl;
+	cout << "==========================Worst Fit Algorithm Dynamic============================" << endl;
 	cout << "Job ID\t\tPartition ID\t\tWaste\t\t\tStatus" << endl;
 	for (int i = 0; i < n; i++) {
 		cout << process[i].id << "\t\t" << process[i].partitionID << "\t\t\t";

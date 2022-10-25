@@ -55,7 +55,8 @@ int main() {
 		cout << "1 - First Fit" << endl;
 		cout << "2 - Next Fit" << endl;
 		cout << "3 - Best Fit" << endl;
-		cout << "4 - Worst Fit" << endl;
+		cout << "4 - Worst Fit (Fixed)" << endl;
+		cout << "5 - Worst Fit (Dynamic)" << endl;
 		cout << "Enter a number to choose a memory management algorithm: ";
 		cin >> action;
 		cout << "==========================================================" << endl << endl;
